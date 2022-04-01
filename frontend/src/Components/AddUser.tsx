@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, Form, Row, Col, Container} from 'react-bootstrap';
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import { nanoid } from 'nanoid' ;
 import { useNavigate, Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 
 
 export default function AddUser(){
     const navigate = useNavigate();
+
     const[id, setID] = useState(nanoid());
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -31,7 +34,7 @@ export default function AddUser(){
                 <div className='row vh-100'>
                     <div className='col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100'>
                         <div className='d-table-cell align-middle'>
-                            <Link to="/"> Return to Home</Link>
+                            <Button className="mb-3 btn-lg btn-success" onClick={() => navigate("/")}><FontAwesomeIcon icon={faAngleLeft} className="w-100"/></Button>
                             <h1 className="text-center mb-5">Add User</h1>
                             <Form className="mt-2 mx-auto">
                                 <Row className = "mb-3">
@@ -89,8 +92,8 @@ export default function AddUser(){
                                         }}
                                         required/>
                                 </Form.Group>
-                                <Button variant="primary" onClick={addUserHandler}>
-                                Submit
+                                <Button variant="primary" className="btn-lg d-flex align-middle mx-auto" onClick={addUserHandler}>
+                                Add
                                 </Button>
                             </Form>
                         </div>
@@ -98,6 +101,5 @@ export default function AddUser(){
                 </div>
             </div>
         </main>
-            
   );
 }

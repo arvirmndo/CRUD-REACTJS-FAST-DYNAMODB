@@ -6,7 +6,6 @@ import {
   Route,
 } from "react-router-dom";
 
-import './index.css';
 import App from './App';
 import AddUser from './Components/AddUser';
 import EditUser from './Components/EditUser';
@@ -18,7 +17,7 @@ render(
     <Routes>
       <Route path="/" element={<App />} />
       <Route path="addUser" element={<AddUser/>} />
-      <Route path="editUser/:id" element={<EditUser/>} />
+      <Route path="editUser/:id/:fName/:lName/:phone/:age/:address" element={<EditUser />} />
     </Routes>
   </BrowserRouter>,
   rootElement

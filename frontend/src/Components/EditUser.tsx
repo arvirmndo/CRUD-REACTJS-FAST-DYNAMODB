@@ -1,76 +1,29 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState} from 'react';
 import axios from 'axios';
 import { Button, Form, Row, Col} from 'react-bootstrap';
-import {Link,  useParams } from "react-router-dom";
-
-
-interface IUser{
-    id: string,
-    firstName: string,
-    lastName: string,
-    phoneNumber: string,
-    age: string,
-    address: string
-}
+import { useParams, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons'
 
 function EditUser(){
+    const navigate = useNavigate();
     let user = useParams();
-    // const userVal = [];
+    const [firstName, setFirstName] = useState(user.fName);
+    const [lastName, setLastName] = useState(user.lName);
+    const [phoneNumber, setPhoneNumber] = useState(user.phone);
+    const [age, setAge] = useState(user.age);
+    const [address, setAddress] = useState(user.address);
 
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [age, setAge] = useState("");
-    const [address, setAddress] = useState("");
-    
-    const [userList, setUserList] = useState<Array<IUser>>([{
-        id: "",
-        firstName: "",
-        lastName: "",
-        phoneNumber: "",
-        age: "",
-        address: ""
-    }]);
-
-    const userURL = `http://localhost:8000/api/user/${user.id}`
-
-    //Read one user
-    useEffect(() => {
-        axios.get(userURL)
-        .then(res =>{
-            setUserList(res.data)
-        })
-    },[]);
-    
-    // const map = new Map(Object.entries(userList));
-
-    // const updateUserHandler = async () => {
-    //     await fetch(`http://localhost:8000/api/user/${user.id}`, {
-    //         method: "PUT",
-    //         headers: { "Content-Type": "application/json" },
-    //         body: JSON.stringify({ 
-    //             firstName: firstName,
-    //             lastName: lastName,
-    //             phoneNumber: phoneNumber,
-    //             age: age,
-    //             address: address})
-    //     })
-    // }
-
+    //Update user event handler
     const updateUserHandler = async() => {
         await axios.put(`http://localhost:8000/api/user/${user.id}`, {
+            'id': user.id,
             'firstName': firstName,
             'lastName': lastName,
             'phoneNumber': phoneNumber,
             'age': age,
             'address': address
-        }).then(res =>  console.log(res))
-        .catch(error => {
-            if (error.response) {
-              console.log(error.response);
-              console.log(phoneNumber);
-            }
-          });
+        }).then(res =>  navigate('/'))
     }
 
     return (
@@ -79,8 +32,7 @@ function EditUser(){
                 <div className='row vh-100'>
                     <div className='col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100'>
                         <div className='d-table-cell align-middle'>
-                        
-                         <Link to="/"> Return to Home</Link>
+                        <Button className="mb-3 btn-lg btn-success" onClick={() => navigate("/")}><FontAwesomeIcon icon={faAngleLeft} className="w-100"/></Button>
                             <h1 className="text-center mb-5">Edit User </h1>
                             <Form className="mt-2 mx-auto">
                                 <Row className = "mb-3">
@@ -144,7 +96,7 @@ function EditUser(){
                                         required/>
                                 </Form.Group>
                             
-                                <Button variant="primary" onClick={updateUserHandler}>
+                                <Button variant="primary" className="btn-lg d-flex align-middle mx-auto" onClick={updateUserHandler}>
                                 Update
                                 </Button>
                             </Form>
@@ -153,7 +105,6 @@ function EditUser(){
                 </div>
             </div>
         </main>
-            
   );
 }
 

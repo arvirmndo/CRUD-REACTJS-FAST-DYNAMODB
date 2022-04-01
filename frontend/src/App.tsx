@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button, Table} from 'react-bootstrap'
-import UserList from './Components/UsersList';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash, faPlus, faPen } from '@fortawesome/free-solid-svg-icons'
 
@@ -35,12 +33,14 @@ function App() {
       .then(res =>{
         setUserList(res.data)
       })
-  });
+  },[]);
   
-  const deleteUserHandler = (id: any) =>{
-    axios.delete(`http://localhost:8000/api/user/${id}/`)
-    .then(res => console.log(res.data))
+  //delete user event handler
+  const deleteUserHandler = async(id: string) => {
+    await axios.delete(`http://localhost:8000/api/user/${id}`)
+    .then(res => window.location.reload())
   }
+
   return (  
     <div className="container">
         <h1 className="text-center my-5">React-TypeScript User CRUD Demo</h1>
@@ -69,7 +69,7 @@ function App() {
                   <td>{user.address}</td>
                   <td>
                     <div className='d-flex justify-content-evenly'> 
-                      <Link className='btn btn-success' to={`/editUser/${user.id}`}><FontAwesomeIcon icon={faPen}/></Link>
+                      <Link className='btn btn-success' to={`/editUser/${user.id}/${user.firstName}/${user.lastName}/${user.phoneNumber}/${user.age}/${user.address}/`}><FontAwesomeIcon icon={faPen}/></Link>
                       <Button className='btn-danger' onClick={() => deleteUserHandler(user.id)}> <FontAwesomeIcon icon={faTrash}/></Button>
                     </div>
                   </td>

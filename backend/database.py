@@ -31,8 +31,7 @@ async def updateUser(id, firstName, lastName, phoneNumber, age, address):
         "age":age,
         "address":address
     }})
-    
-    document = await collection.find_one({"id":id})
+    document = await collection.find_one({"id":id}, {'_id':0})
     return document
 
 async def removeUser(id):
